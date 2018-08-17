@@ -9,9 +9,9 @@
 ; sent by f, d seconds after the beginning of time 
 
 (define E1
-  (make-email "Freddie" 2004 "Come in on Monday."))
+  (make-email "Freddie" 2017 "Come in on Monday."))
 (define E2
-  (make-email "Yaeji" 2017 "Can't wait for the Ri concert!"))
+  (make-email "Yaeji" 2004 "Can't wait for the Ri concert!"))
 (define E3
   (make-email "Trev" 2013 "Oh boy"))
 
@@ -29,10 +29,10 @@
 ;; List-of-email -> List-of-email
 ;; sorts loe by date in descending order
 (check-expect (sort-emails> '()) '())
-(check-expect (sort-emails> LOE1) (list E2 E1))
-(check-expect (sort-emails> LOE2) (list E3 E1))
-(check-expect (sort-emails> LOE3) (list E2 E3))
-(check-expect (sort-emails> LOE4) (list E2 E3 E1))
+(check-expect (sort-emails> LOE1) (list E1 E2))
+(check-expect (sort-emails> LOE2) (list E1 E3))
+(check-expect (sort-emails> LOE3) (list E3 E2))
+(check-expect (sort-emails> LOE4) (list E1 E3 E2))
 
 (define (sort-emails> loe)
   (cond
@@ -45,11 +45,11 @@
 (check-expect
  (insert-email E1 '()) (list E1))
 (check-expect
- (insert-email E1 (list E2)) (list E2 E1))
+ (insert-email E1 (list E2)) (list E1 E2))
 (check-expect
- (insert-email E1 (list E3)) (list E3 E1))
+ (insert-email E1 (list E3)) (list E1 E3))
 (check-expect
- (insert-email E1 (list E2 E3)) (list E2 E3 E1))
+ (insert-email E1 (list E3 E2)) (list E1 E3 E2))
 
 (define (insert-email e loe)
   (cond
@@ -60,8 +60,8 @@
     
 ;; EmailMessage EmailMessage -> Boolean
 ;; produces true if e1 >= e2
-(check-expect (e>? E1 E2) #f)
-(check-expect (e>? E2 E1) #t)
+(check-expect (e>? E1 E2) #t)
+(check-expect (e>? E2 E1) #f)
 (check-expect (e>? E2 E2) #t)
 
 (define (e>? e1 e2)
@@ -79,7 +79,8 @@
   (cond
     [(empty? loe) '()]
     [else
-     (insert-email (first loe) (sort-emails> (rest loe)))]))
+     (insert-email-by-name (first loe)
+                           (sort-emails-by-name> (rest loe)))]))
 
 ; Number List-of-email -> List-of-email
 ; inserts e into the sorted list of email, loe
@@ -97,7 +98,8 @@
     [(empty? loe) (cons e '())]
     [else (if (en>? e (first loe))
               (cons e loe)
-              (cons (first loe) (insert-email-by-name e (rest loe))))]))
+              (cons (first loe)
+                    (insert-email-by-name e (rest loe))))]))
 
 ;; EmailMessage EmailMessage -> Boolean
 ;; produces true if e1 > e2
