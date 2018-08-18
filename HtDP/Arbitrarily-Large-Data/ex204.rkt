@@ -166,12 +166,12 @@
        "8 Mile: Music from and Inspired by the Motion Picture"))
 
 (define (select-album-titles/unique lt)
-  (cond
-    [(empty? lt) '()]
-    [else
-     (create-set
+  (create-set
+   (cond
+     [(empty? lt) '()]
+     [else 
       (cons (track-album (first lt))
-            (select-album-titles/unique (rest lt))))]))
+            (select-album-titles/unique (rest lt)))])))
 
 ;; String LTracks -> LTracks
 ;; extracts the list of tracks in album s

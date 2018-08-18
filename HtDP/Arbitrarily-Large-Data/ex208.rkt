@@ -223,12 +223,12 @@
  (list "a" "g"))
 
 (define (boolean-attributes ll)
-  (cond
-    [(empty? ll) '()]
-    [else
-     (create-set
+  (create-set
+   (cond
+     [(empty? ll) '()]
+     [else
       (append (get-boolean-attrs (first ll))
-              (boolean-attributes (rest ll))))]))
+              (boolean-attributes (rest ll)))])))
 
 ;; LAssoc -> List-of-strings
 ;; produces a list of keys associated with Booleans
