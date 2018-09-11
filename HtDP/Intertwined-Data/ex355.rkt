@@ -37,9 +37,15 @@
 (check-error (eval-var-lookup (make-mul 'z 'x) AL))
 
 (define (eval-var-lookup ex da)
+  (match ex
+    [(? number?) ex]
+    [(? symbol?) (get-assoc-or-err ex da)]
+    [(add   l r) (+ (eval-var-lookup l da) (eval-var-lookup r da))]
+    [(mul   l r) (* (eval-var-lookup l da) (eval-var-lookup r da))]))
+
+;; Symbol AL -> Number
+;; produces the associated number in da if ex exists
+(define (get-assoc-or-err ex da)
   (local ((define var (assq ex da)))
-    (match ex
-      [(? number?) ex]
-      [(? symbol?) (if (false? var) (error ERROR) (second var))]
-      [(add   l r) (+ (eval-var-lookup l da) (eval-var-lookup r da))]
-      [(mul   l r) (* (eval-var-lookup l da) (eval-var-lookup r da))])))
+    (if (false? var) (error ERROR) (second var))))
+
