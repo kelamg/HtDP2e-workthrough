@@ -4,12 +4,9 @@
 
 (require racket/list)
 
-(define THRESHOLD 5)
-
 ; [List-of Number] [X X -> Boolean] -> [List-of Number]
 ; produces a sorted version of alon based on cmp
 ; assume the numbers are all distinct
-; uses sort< if length of alon is below THRESHOLD
 (check-expect
  (quick-sort< '() <) '())
 (check-expect
